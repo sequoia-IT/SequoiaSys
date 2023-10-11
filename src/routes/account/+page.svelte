@@ -1,6 +1,6 @@
 <!-- src/routes/account/+page.svelte -->
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms';
+	import { enhance} from '$app/forms';
 
 	export let data;
 	export let form;
@@ -15,16 +15,16 @@
 	let website: string = profile?.website ?? '';
 	let avatarUrl: string = profile?.avatar_url ?? '';
 
-	const handleSubmit: SubmitFunction = () => {
+	const handleSubmit  = () => {
 		loading = true;
 		return async () => {
 			loading = false;
 		};
 	};
 
-	const handleSignOut: SubmitFunction = () => {
+	const handleSignOut = () => {
 		loading = true;
-		return async ({ update }) => {
+		return async ({ update }:any) => {
 			loading = false;
 			update();
 		};

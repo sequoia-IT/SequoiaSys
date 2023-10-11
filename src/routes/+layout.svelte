@@ -1,5 +1,6 @@
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
+	  import "../app.css";
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
@@ -20,9 +21,9 @@
 </script>
 
 <svelte:head>
-	<title>User Management</title>
+	<title>Sequoia School Management System</title>
 </svelte:head>
 
-<div>
+<div class="container mx-auto p-4">
 	<slot />
 </div>
