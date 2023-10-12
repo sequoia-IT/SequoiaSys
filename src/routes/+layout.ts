@@ -2,6 +2,7 @@
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
 import type { Database } from '../database.types'
+import { USER_EMAIL } from '$lib/store'
 
 export const load = async ({ fetch, data, depends }) => {
   depends('supabase:auth')
@@ -16,6 +17,8 @@ export const load = async ({ fetch, data, depends }) => {
   const {
     data: { session },
   } = await supabase.auth.getSession()
+
+  USER_EMAIL.set(session?.user.email)
 
   return { supabase, session }
 }

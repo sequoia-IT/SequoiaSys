@@ -1,43 +1,71 @@
 <!-- // src/routes/auth/+page.svelte -->
 <script>
-// @ts-nocheck
-
 	import Select from 'svelte-select';
 	export let data;
+	import { goto } from '$app/navigation';
 
 	let { supabase } = data;
 	$: ({ supabase } = data);
+	let items = [{}];
+	if (data.teachers) {
+		items = data.teachers.map((emailObj) => ({ value: emailObj.email, label: emailObj.email }));
+	} else {
+		items = [];
+	}
 
-
-    let items = data.teachers.map(emailObj => ({ "value": emailObj.email, "label": emailObj.email }));
-	let email="";
-	let password="";
+	let email = { value: '', label: '' };
+	let password = '';
+	let hint = '';
 
 	const handleSignUp = async () => {
-		await supabase.auth.signUp({
-			email : email.value,
+		const { data: UserData } = await supabase.auth.signUp({
+			email: email.value,
 			password,
 			options: {
-				emailRedirectTo: `${location.origin}/login`
+				emailRedirectTo: `${location.origin}/login`,
 			}
 		});
+
+		const { error } = await supabase
+			.from('Teachers')
+			.update({ isregistered: true })
+			.ilike('email', email.value)
+			.select();
+
+		if (error) {
+			alert("Error something happened")
+		}
+		if (UserData) {
+			goto('/teacher', { replaceState: true });
+		}
+	};
+
+	const handleSelected = () => {
+		hint = 'Hint: You can search';
 	};
 </script>
 
 <div>
-	<h1 class="text-3xl font-bold">Signup</h1>
+	<h1 class="text-3xl font-bold">Register</h1>
 	<form on:submit={handleSignUp}>
 		<div class="form-control w-full max-w-xs">
 			<div class="label">
 				<span class="label-text">Email</span>
+				<span class="label-text">{hint}</span>
 			</div>
-			<Select
-				placeholder="Select your past email"
-				{items}
-				clearable={true}
-				bind:value={email}
-				class="input input-bordered w-full max-w-xs"
-			/>
+			{#if items.length > 0}
+				<Select
+					placeholder="Select your past email"
+					{items}
+					clearable={true}
+					bind:value={email}
+					class="input input-bordered w-full max-w-xs"
+					on:focus={handleSelected}
+					on:blur={() => {
+						hint = '';
+					}}
+				/>
+			{/if}
 		</div>
 
 		<div class="form-control w-full max-w-xs">
@@ -46,7 +74,6 @@
 			</div>
 			<input
 				type="password"
-				name="password"
 				bind:value={password}
 				placeholder="Type here"
 				class="input input-bordered w-full max-w-xs"

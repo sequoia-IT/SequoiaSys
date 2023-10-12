@@ -11,98 +11,192 @@ export interface Database {
     Tables: {
       Classes: {
         Row: {
-          AcademicYearId: number | null
-          Active: number | null
-          ClassYearCode: string | null
-          Code: string | null
-          Id: number
-          Name: string | null
-          Term: number | null
+          class_code: string
         }
         Insert: {
-          AcademicYearId?: number | null
-          Active?: number | null
-          ClassYearCode?: string | null
-          Code?: string | null
-          Id: number
-          Name?: string | null
-          Term?: number | null
+          class_code: string
         }
         Update: {
-          AcademicYearId?: number | null
-          Active?: number | null
-          ClassYearCode?: string | null
-          Code?: string | null
-          Id?: number
-          Name?: string | null
-          Term?: number | null
+          class_code?: string
         }
         Relationships: []
       }
-      "Student Sessions": {
+      Student_Divisions: {
         Row: {
-          "ACADEMIC YEAR": string | null
-          "CLASS CODE": string | null
-          "CLASS TERM": number | null
+          academic_year: string | null
+          class_term: number | null
+          division: string | null
           id: string
-          "STUDENT CARD ID": string | null
+          studentID: string
+          subject: string | null
         }
         Insert: {
-          "ACADEMIC YEAR"?: string | null
-          "CLASS CODE"?: string | null
-          "CLASS TERM"?: number | null
+          academic_year?: string | null
+          class_term?: number | null
+          division?: string | null
           id?: string
-          "STUDENT CARD ID"?: string | null
+          studentID: string
+          subject?: string | null
         }
         Update: {
-          "ACADEMIC YEAR"?: string | null
-          "CLASS CODE"?: string | null
-          "CLASS TERM"?: number | null
+          academic_year?: string | null
+          class_term?: number | null
+          division?: string | null
           id?: string
-          "STUDENT CARD ID"?: string | null
+          studentID?: string
+          subject?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Student Sessions_STUDENT CARD ID_fkey"
-            columns: ["STUDENT CARD ID"]
+            foreignKeyName: "Student_Divisions_studentID_fkey"
+            columns: ["studentID"]
             referencedRelation: "Students"
-            referencedColumns: ["STUDENT CARD ID"]
+            referencedColumns: ["studentID"]
+          }
+        ]
+      }
+      Student_Sessions: {
+        Row: {
+          academic_year: string | null
+          class_code: string | null
+          class_term: number | null
+          divisions: Json[] | null
+          id: string
+          studentID: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          class_code?: string | null
+          class_term?: number | null
+          divisions?: Json[] | null
+          id?: string
+          studentID?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          class_code?: string | null
+          class_term?: number | null
+          divisions?: Json[] | null
+          id?: string
+          studentID?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Student_Sessions_studentID_fkey"
+            columns: ["studentID"]
+            referencedRelation: "Students"
+            referencedColumns: ["studentID"]
           }
         ]
       }
       Students: {
         Row: {
           id: string | null
-          "STUDENT CARD ID": string
-          "STUDENT NAME": string | null
+          name: string | null
+          studentID: string
         }
         Insert: {
           id?: string | null
-          "STUDENT CARD ID": string
-          "STUDENT NAME"?: string | null
+          name?: string | null
+          studentID: string
         }
         Update: {
           id?: string | null
-          "STUDENT CARD ID"?: string
-          "STUDENT NAME"?: string | null
+          name?: string | null
+          studentID?: string
+        }
+        Relationships: []
+      }
+      Subjects: {
+        Row: {
+          Abbreviation: string
+          Name: string | null
+        }
+        Insert: {
+          Abbreviation: string
+          Name?: string | null
+        }
+        Update: {
+          Abbreviation?: string
+          Name?: string | null
+        }
+        Relationships: []
+      }
+      "Teacher Classes": {
+        Row: {
+          academic_year: string | null
+          available_classrooms: string | null
+          class_codes: string | null
+          class_term: number | null
+          group: string | null
+          id: string
+          subject: string | null
+          teacher: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          available_classrooms?: string | null
+          class_codes?: string | null
+          class_term?: number | null
+          group?: string | null
+          id?: string
+          subject?: string | null
+          teacher?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          available_classrooms?: string | null
+          class_codes?: string | null
+          class_term?: number | null
+          group?: string | null
+          id?: string
+          subject?: string | null
+          teacher?: string | null
+        }
+        Relationships: []
+      }
+      "Teacher Classes individual": {
+        Row: {
+          academic_year: string | null
+          Class: string | null
+          class_term: number | null
+          id: string
+          Teacher: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          Class?: string | null
+          class_term?: number | null
+          id?: string
+          Teacher?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          Class?: string | null
+          class_term?: number | null
+          id?: string
+          Teacher?: string | null
         }
         Relationships: []
       }
       Teachers: {
         Row: {
-          FullName: string | null
+          email: string | null
           id: string
-          UserName: string | null
+          isregistered: boolean | null
+          name: string | null
         }
         Insert: {
-          FullName?: string | null
+          email?: string | null
           id?: string
-          UserName?: string | null
+          isregistered?: boolean | null
+          name?: string | null
         }
         Update: {
-          FullName?: string | null
+          email?: string | null
           id?: string
-          UserName?: string | null
+          isregistered?: boolean | null
+          name?: string | null
         }
         Relationships: []
       }
