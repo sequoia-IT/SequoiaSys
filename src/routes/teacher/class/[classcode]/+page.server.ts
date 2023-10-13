@@ -37,7 +37,7 @@ export const load = async ({ params, locals: { supabase, getSession } }) => {
             .select(
                 `
         studentID,
-        malay,
+        ${user_subject},
         Students(studentID, name)
         `
             )
@@ -65,7 +65,7 @@ export const load = async ({ params, locals: { supabase, getSession } }) => {
     .eq('class_codes', params.classcode)
     .ilike('subject', user_subject)
     .ilike('teacher', user_name)
-    .order('group', { ascending: true }).single()
+    .order('group', { ascending: true }).limit(1).single()
 
 
     return { session, parsedlist,classgroup };

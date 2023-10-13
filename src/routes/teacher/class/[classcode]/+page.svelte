@@ -8,9 +8,11 @@
     let student_classes = data.parsedlist
     let teacher_group = data.classgroup?.group
     let count = new Array(student_classes.length).fill(1);
+console.log(student_classes)
 </script>
 
 <h1 class="text-2xl mb-10">CLASSES {$page.params.classcode}</h1>
+<h1 class="text-2xl mb-10">{teacher_group}</h1>
 
 <div class="overflow-x-auto">
 	<table class="table table-xs table-pin-rows table-pin-cols">

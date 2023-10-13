@@ -19,8 +19,8 @@ export const load = async ({ fetch, data, depends }) => {
   } = await supabase.auth.getSession()
 
   USER_EMAIL.set(session?.user.email)
-  USER_SUBJECT.set("malay");
-  USER_NAME.set("Wani");
+  USER_SUBJECT.set("add_math");
+  USER_NAME.set("Joe");
 
 
   return { supabase, session }
