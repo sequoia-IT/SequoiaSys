@@ -1,3 +1,4 @@
+import { USER_NAME } from '$lib/store';
 import { redirect } from '@sveltejs/kit'
 
 export const load = async ({ locals: { supabase, getSession } }) => {
@@ -8,6 +9,10 @@ export const load = async ({ locals: { supabase, getSession } }) => {
 		throw redirect(303, '/login');
 	}
 
+  let user_name;
+  const unsubscribe = USER_NAME.subscribe(data=>{
+    user_name = data;
+  })
 
   const { data: user } = await supabase
   .from('Teachers')
@@ -17,9 +22,9 @@ export const load = async ({ locals: { supabase, getSession } }) => {
 
 //TODO
   const { data: classes } = await supabase
-  .from('Teacher Classes')
+  .from('Teacher_Classes')
   .select(`class_codes`)
-  .eq('teacher', "Ayu")
+  .eq('teacher', user_name)
 
 
 return { session, user, classes };
