@@ -27,6 +27,26 @@
 	// USER_SUBJECT.set("malay");
 	// USER_NAME.set(data.user?.name);
     //TODO
+
+	$: teacher_classes = removeDuplicates(data.classes);
+
+	function removeDuplicates(arr) {
+    const unique = {};
+    const result = [];
+
+    for (const item of arr) {
+        const classCode = item.class_codes;
+
+        if (!unique[classCode]) {
+            result.push(item);
+            unique[classCode] = true;
+        }
+    }
+
+    return result;
+}
+
+
 </script>
 
 <div class="text-center">
@@ -40,15 +60,17 @@
 	<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
 		<li><button on:click={handleSignOut} disabled>Account Info</button></li>
 		<li><button on:click={handleSignOut} disabled>Timetable</button></li>
+		<li><a href="/exam/create">Create Exam</a></li>
 		<li><button on:click={handleSignOut}>Logout</button></li>
+		
 	</ul>
 
 	<div class="flex flex-row">
 		<div class="w-1/2 px-5">
 			<h2 class="mt-7 text-2xl">Mark your division Class</h2>
 			<ul class="mt-2 menu bg-base-200 rounded-box mx-auto">
-				{#if data.classes}
-					{#each data.classes as classroom}
+				{#if teacher_classes}
+					{#each teacher_classes as classroom}
 						<li>
 							<a class="mb-2 justify-center" data-sveltekit-preload-data="off" href="/teacher/division/{classroom.class_codes}">{classroom.class_codes}</a
 							>
@@ -63,8 +85,8 @@
 		<div class="w-1/2 px-5">
 			<h2 class="mt-7 text-2xl">Your Classes</h2>
 			<ul class="mt-2 menu bg-base-200 rounded-box mx-auto">
-				{#if data.classes}
-					{#each data.classes as classroom}
+				{#if teacher_classes}
+					{#each teacher_classes as classroom}
 						<li>
 							<a class="mb-2 justify-center" data-sveltekit-preload-data="off" href="/teacher/class/{classroom.class_codes}">{classroom.class_codes}</a
 							>

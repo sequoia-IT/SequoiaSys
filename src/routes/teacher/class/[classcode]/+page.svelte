@@ -21,7 +21,12 @@ console.log(student_classes)
 				<th>No</th>
 				<td>StudentID</td>
 				<td>Student Name</td>
-				<td>Division Group</td>
+				<!-- <td>Division Group</td> -->
+				<td>P1</td>
+				<td>P2</td>
+				<td>P3</td>
+				<td>CW</td>
+				<td>Comments</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,7 +40,8 @@ console.log(student_classes)
                     <td>{count[index]++}</td>  
                     <td>{student.studentID}</td>  
                     <td>{student.Students.name}</td>  
-                    <td>{student[$USER_SUBJECT]}</td>
+                    <!-- <td>{student[$USER_SUBJECT]}</td> -->
+                    <td>{student.Student_Marks.length!==0 && student.Student_Marks[0].mark1}</td>
                    </tr>
                 {/if}
                   

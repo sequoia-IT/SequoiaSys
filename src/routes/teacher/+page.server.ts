@@ -24,8 +24,8 @@ export const load = async ({ locals: { supabase, getSession } }) => {
   const { data: classes } = await supabase
   .from('Teacher_Classes')
   .select(`class_codes`)
-  .eq('teacher', user_name)
-
+  .ilike('teacher', user_name)
+  .order('class_codes', { ascending: true })
 
 return { session, user, classes };
 

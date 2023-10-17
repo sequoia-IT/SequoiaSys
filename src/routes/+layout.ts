@@ -18,9 +18,19 @@ export const load = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession()
 
+  if (session?.user.email) {
+
+    const { data: teacher } = await supabase.from('Teachers')
+      .select(`name,subject`)
+      .eq('email', session?.user.email)
+      .single()
+    USER_SUBJECT.set(teacher.subject)
+    USER_NAME.set(teacher.name)
+  }
+
   USER_EMAIL.set(session?.user.email)
-  USER_SUBJECT.set("add_math");
-  USER_NAME.set("Joe");
+  // USER_SUBJECT.set("add_math".toLocaleLowerCase());
+  // USER_NAME.set("JOE");
 
 
   return { supabase, session }

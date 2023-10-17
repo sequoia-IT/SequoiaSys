@@ -38,7 +38,8 @@ export const load = async ({ params, locals: { supabase, getSession } }) => {
                 `
         studentID,
         ${user_subject},
-        Students(studentID, name)
+        Students(studentID, name),
+        Student_Marks(mark1)
         `
             )
             .ilike('class_code', classcode)

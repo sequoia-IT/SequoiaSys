@@ -36,7 +36,21 @@
 
 	let classcodes = convertInputToArrays($page.params.classcode);
 
-	let divisions = data.divisions;
+	let divisions = filterDuplicates(data.divisions)
+	
+	function filterDuplicates(inputArray) {
+  const seen = new Map();
+  return inputArray.filter((item) => {
+    const itemStr = JSON.stringify(item);
+    if (seen.has(itemStr)) {
+      return false;
+    }
+    seen.set(itemStr, true);
+    return true;
+  });
+}
+
+console.log(divisions)
 
 	const displayStudents = async (classcode: string) => {
 		const { data: user } = await supabase
@@ -62,6 +76,7 @@
 			.eq('studentID', studentID)
 			.eq('class_term', $SCHOOL_TERM)
 			.eq('academic_year', `${$SCHOOL_ACADEMIC_YEAR}`);
+		// make toast  success and error
 	};
 
 	const undoupdateStudentDivision = async (studentID, divisions) => {
@@ -71,8 +86,73 @@
 			.eq('studentID', studentID)
 			.eq('class_term', $SCHOOL_TERM)
 			.eq('academic_year', `${$SCHOOL_ACADEMIC_YEAR}`);
+		// make toast  success and error
 	};
 
+	const checkanynullgroup = async (classcode) => {
+		try {
+			const { data: students } = await supabase
+				.from('Student_Sessions')
+				.select(
+					`
+					id,${$USER_SUBJECT}
+      `
+				)
+				.ilike('class_code', classcode)
+				.is($USER_SUBJECT, null)
+				.eq('class_term', $SCHOOL_TERM)
+				.eq('academic_year', `${$SCHOOL_ACADEMIC_YEAR}`);
+
+			if (students && students?.length > 0) {
+				return { students, ischecked: false };
+			} else {
+				return { students: [], ischecked: true };
+			}
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	const selectallstudentsinclass = async (students, classgroup) => {
+		const { data: user } = await supabase.from('Student_Sessions').upsert(
+			students.map((item) => ({
+				...item,
+				[$USER_SUBJECT]: item[$USER_SUBJECT] === null ? classgroup : item[$USER_SUBJECT]
+			}))
+		);
+		window.location.reload();
+		// make toast  success and error
+	};
+
+	const unselectallstudentsinclass = async (classcode, classgroup) => {
+		try {
+			const { data: students } = await supabase
+				.from('Student_Sessions')
+				.select(
+					`
+					id,${$USER_SUBJECT}
+      `
+				)
+				.ilike('class_code', classcode)
+				.eq($USER_SUBJECT, classgroup)
+				.eq('class_term', $SCHOOL_TERM)
+				.eq('academic_year', `${$SCHOOL_ACADEMIC_YEAR}`);
+
+			if (students) {
+				await supabase.from('Student_Sessions').upsert(
+					students.map((item) => ({
+						...item,
+						[$USER_SUBJECT]: item[$USER_SUBJECT] === classgroup ? null : item[$USER_SUBJECT]
+					}))
+				);
+				window.location.reload();
+			}
+		} catch (error) {
+			throw error;
+		}
+
+		// make toast  success and error
+	};
 </script>
 
 <h1>CLASS DIVISION</h1>
@@ -92,7 +172,7 @@
 					{#each divisions as code}
 						<td
 							>{code.group}
-							<br />({code.teacher})</td
+							<br />({code.teacher.toLocaleUpperCase()})</td
 						>
 					{/each}
 				{/if}
@@ -119,11 +199,16 @@
 								{#each divisions as code}
 									<td
 										><input
-											disabled={code.teacher !== $USER_NAME || student[$USER_SUBJECT] && student[$USER_SUBJECT] !==code.group }
+											disabled={code.teacher.toLocaleLowerCase() !== $USER_NAME ||
+												(student[$USER_SUBJECT] && student[$USER_SUBJECT] !== code.group)}
 											type="checkbox"
 											on:change={(event) => {
 												if (event.target.checked) {
-													updateStudentDivision(student.studentID, student[$USER_SUBJECT], code.group);
+													updateStudentDivision(
+														student.studentID,
+														student[$USER_SUBJECT],
+														code.group
+													);
 												} else {
 													undoupdateStudentDivision(student.studentID, student[$USER_SUBJECT]);
 												}
@@ -134,19 +219,45 @@
 									>
 								{/each}
 							{/if}
-							<td><input type="checkbox" checked={!(student[$USER_SUBJECT])} class="checkbox" disabled={!($USER_NAME==='admin')} /></td>
+							<td
+								><input
+									type="checkbox"
+									checked={!student[$USER_SUBJECT]}
+									class="checkbox"
+									disabled={!($USER_NAME === 'admin')}
+								/></td
+							>
 						</tr>
 					{/each}
 				{/await}
 				<tr>
 					<td colspan="3" />
 					{#each divisions as code}
-					<td  >
-					<div class="flex items-center">
-						<input type="checkbox" class="checkbox" />
-						<span class="ml-2 align-middle">Select all</span>
-					</div>
-					</td>
+						<td>
+							{#if code.teacher.toLocaleLowerCase() === $USER_NAME}
+								{#await checkanynullgroup(classcode)}
+									<p>Loading...</p>
+								{:then groupstudent}
+									<div class="flex items-center">
+										<input
+											type="checkbox"
+											class="checkbox"
+											checked={groupstudent.ischecked}
+											on:change={(event) => {
+												if (event.target.checked) {
+													selectallstudentsinclass(groupstudent.students, code.group);
+												} else {
+													unselectallstudentsinclass(classcode, code.group);
+												}
+											}}
+										/>
+										<span class="ml-2 align-middle">Select all</span>
+									</div>
+								{:catch error}
+									<p>Error: {error.message}</p>
+								{/await}
+							{/if}
+						</td>
 					{/each}
 				</tr>
 			{/each}
