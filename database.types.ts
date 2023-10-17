@@ -55,30 +55,133 @@ export interface Database {
           }
         ]
       }
+      Student_Marks: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          mark1: number | null
+          mark2: number | null
+          mark3: number | null
+          mark4: number | null
+          sessionID: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          mark1?: number | null
+          mark2?: number | null
+          mark3?: number | null
+          mark4?: number | null
+          sessionID?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          mark1?: number | null
+          mark2?: number | null
+          mark3?: number | null
+          mark4?: number | null
+          sessionID?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Student_Marks_sessionID_fkey"
+            columns: ["sessionID"]
+            referencedRelation: "Student_Sessions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       Student_Sessions: {
         Row: {
           academic_year: string | null
+          acct: string | null
+          add_math: string | null
+          arts: string | null
+          bio: string | null
+          bs: string | null
+          ca: string | null
+          chem: string | null
+          chinese: string | null
           class_code: string | null
           class_term: number | null
-          divisions: Json[] | null
+          cs: string | null
+          econ: string | null
+          english: string | null
+          geo: string | null
+          history: string | null
+          ict: string | null
           id: string
+          literacy: string | null
+          ma: string | null
+          malay: string | null
+          math: string | null
+          phy: string | null
+          reading: string | null
+          scs: string | null
           studentID: string | null
+          va: string | null
         }
         Insert: {
           academic_year?: string | null
+          acct?: string | null
+          add_math?: string | null
+          arts?: string | null
+          bio?: string | null
+          bs?: string | null
+          ca?: string | null
+          chem?: string | null
+          chinese?: string | null
           class_code?: string | null
           class_term?: number | null
-          divisions?: Json[] | null
+          cs?: string | null
+          econ?: string | null
+          english?: string | null
+          geo?: string | null
+          history?: string | null
+          ict?: string | null
           id?: string
+          literacy?: string | null
+          ma?: string | null
+          malay?: string | null
+          math?: string | null
+          phy?: string | null
+          reading?: string | null
+          scs?: string | null
           studentID?: string | null
+          va?: string | null
         }
         Update: {
           academic_year?: string | null
+          acct?: string | null
+          add_math?: string | null
+          arts?: string | null
+          bio?: string | null
+          bs?: string | null
+          ca?: string | null
+          chem?: string | null
+          chinese?: string | null
           class_code?: string | null
           class_term?: number | null
-          divisions?: Json[] | null
+          cs?: string | null
+          econ?: string | null
+          english?: string | null
+          geo?: string | null
+          history?: string | null
+          ict?: string | null
           id?: string
+          literacy?: string | null
+          ma?: string | null
+          malay?: string | null
+          math?: string | null
+          phy?: string | null
+          reading?: string | null
+          scs?: string | null
           studentID?: string | null
+          va?: string | null
         }
         Relationships: [
           {
@@ -122,7 +225,31 @@ export interface Database {
         }
         Relationships: []
       }
-      "Teacher Classes": {
+      "Teacher Classes individual": {
+        Row: {
+          academic_year: string | null
+          Class: string | null
+          class_term: number | null
+          id: string
+          Teacher: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          Class?: string | null
+          class_term?: number | null
+          id?: string
+          Teacher?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          Class?: string | null
+          class_term?: number | null
+          id?: string
+          Teacher?: string | null
+        }
+        Relationships: []
+      }
+      Teacher_Classes: {
         Row: {
           academic_year: string | null
           available_classrooms: string | null
@@ -155,48 +282,27 @@ export interface Database {
         }
         Relationships: []
       }
-      "Teacher Classes individual": {
-        Row: {
-          academic_year: string | null
-          Class: string | null
-          class_term: number | null
-          id: string
-          Teacher: string | null
-        }
-        Insert: {
-          academic_year?: string | null
-          Class?: string | null
-          class_term?: number | null
-          id?: string
-          Teacher?: string | null
-        }
-        Update: {
-          academic_year?: string | null
-          Class?: string | null
-          class_term?: number | null
-          id?: string
-          Teacher?: string | null
-        }
-        Relationships: []
-      }
       Teachers: {
         Row: {
           email: string | null
           id: string
           isregistered: boolean | null
           name: string | null
+          subject: string | null
         }
         Insert: {
           email?: string | null
           id?: string
           isregistered?: boolean | null
           name?: string | null
+          subject?: string | null
         }
         Update: {
           email?: string | null
           id?: string
           isregistered?: boolean | null
           name?: string | null
+          subject?: string | null
         }
         Relationships: []
       }
