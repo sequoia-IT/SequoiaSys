@@ -1,6 +1,7 @@
 <!-- // src/routes/auth/+page.svelte -->
 <script>
 	import { goto } from '$app/navigation';
+	import { USER_EMAIL, USER_NAME, USER_SUBJECT } from '$lib/store.js';
 
 	export let data;
 	let { supabase } = data;
@@ -14,7 +15,24 @@
 			email,
 			password
 		});
-		console.log(userData, 'error', error);
+
+		if (email) {
+			const { data: teacher } = await supabase
+				.from('Teachers')
+				.select(`name,subject`)
+				.eq('email', email)
+				.single();
+			if (teacher) {
+				USER_SUBJECT.set(teacher.subject);
+				USER_NAME.set(teacher.name);
+				console.log($USER_NAME);
+			} else {
+				USER_SUBJECT.set('NO_SUBJECT_FOUND'.toLocaleLowerCase());
+				USER_NAME.set('NO_USER_FOUND');
+			}
+			USER_EMAIL.set(email);
+		}
+
 		if (!error) {
 			goto('/teacher', { replaceState: true });
 		}
@@ -50,7 +68,11 @@
 			</div>
 
 			<div class="pt-10">
+				<a href="/signup" class="btn btn-link btn-primary">Register</a>
 				<button on:click={handleSignIn} class="btn btn-primary">Sign In</button>
+			</div>
+			<div class="pt-3">
+				<button on:click={handleSignIn} class="btn btn-link">Forgot your password?</button>
 			</div>
 		</form>
 	</div>

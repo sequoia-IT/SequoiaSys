@@ -13,40 +13,30 @@
 		goto('/login', { replaceState: true });
 	};
 
-	function subjectextractor(email: string | undefined) {
-		if (email) {
-			const regex = /\.([a-zA-Z]+)(?=\d*@)/;
-			const match = email.match(regex);
-			return match ? match[1] : 'Not found';
-		} else return 'Error';
-	}
-
 	// USER_SUBJECT.set(subjectextractor(data.session.user.email));
 	// USER_SUBJECT.set("English");
 	// USER_NAME.set("Chua");
 	// USER_SUBJECT.set("malay");
 	// USER_NAME.set(data.user?.name);
-    //TODO
+	//TODO
 
 	$: teacher_classes = removeDuplicates(data.classes);
 
 	function removeDuplicates(arr) {
-    const unique = {};
-    const result = [];
+		const unique = {};
+		const result = [];
 
-    for (const item of arr) {
-        const classCode = item.class_codes;
+		for (const item of arr) {
+			const classCode = item.class_codes;
 
-        if (!unique[classCode]) {
-            result.push(item);
-            unique[classCode] = true;
-        }
-    }
+			if (!unique[classCode]) {
+				result.push(item);
+				unique[classCode] = true;
+			}
+		}
 
-    return result;
-}
-
-
+		return result;
+	}
 </script>
 
 <div class="text-center">
@@ -62,7 +52,6 @@
 		<li><button on:click={handleSignOut} disabled>Timetable</button></li>
 		<li><a href="/exam/create">Create Exam</a></li>
 		<li><button on:click={handleSignOut}>Logout</button></li>
-		
 	</ul>
 
 	<div class="flex flex-row">
@@ -70,9 +59,12 @@
 			<h2 class="mt-7 text-2xl">Mark your division Class</h2>
 			<ul class="mt-2 menu bg-base-200 rounded-box mx-auto">
 				{#if teacher_classes}
-					{#each teacher_classes as classroom}
+					{#each teacher_classes as classroom (classroom.class_codes)}
 						<li>
-							<a class="mb-2 justify-center" data-sveltekit-preload-data="off" href="/teacher/division/{classroom.class_codes}">{classroom.class_codes}</a
+							<a
+								class="mb-2 justify-center"
+								data-sveltekit-preload-data="off"
+								href="/teacher/division/{classroom.class_codes}">{classroom.class_codes}</a
 							>
 						</li>
 					{/each}
@@ -88,7 +80,10 @@
 				{#if teacher_classes}
 					{#each teacher_classes as classroom}
 						<li>
-							<a class="mb-2 justify-center" data-sveltekit-preload-data="off" href="/teacher/class/{classroom.class_codes}">{classroom.class_codes}</a
+							<a
+								class="mb-2 justify-center"
+								data-sveltekit-preload-data="off"
+								href="/teacher/class/{classroom.class_codes}">{classroom.class_codes}</a
 							>
 						</li>
 					{/each}

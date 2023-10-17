@@ -36,21 +36,21 @@
 
 	let classcodes = convertInputToArrays($page.params.classcode);
 
-	let divisions = filterDuplicates(data.divisions)
-	
-	function filterDuplicates(inputArray) {
-  const seen = new Map();
-  return inputArray.filter((item) => {
-    const itemStr = JSON.stringify(item);
-    if (seen.has(itemStr)) {
-      return false;
-    }
-    seen.set(itemStr, true);
-    return true;
-  });
-}
+	let divisions = filterDuplicates(data.divisions);
 
-console.log(divisions)
+	function filterDuplicates(inputArray) {
+		const seen = new Map();
+		return inputArray.filter((item) => {
+			const itemStr = JSON.stringify(item);
+			if (seen.has(itemStr)) {
+				return false;
+			}
+			seen.set(itemStr, true);
+			return true;
+		});
+	}
+
+	console.log(divisions);
 
 	const displayStudents = async (classcode: string) => {
 		const { data: user } = await supabase
@@ -153,6 +153,14 @@ console.log(divisions)
 
 		// make toast  success and error
 	};
+
+	function isTeacherMatch(teacher, user_name) {
+		// Split the teacher variable into an array of names
+		const teacherNames = teacher.split(',').map((name) => name.trim());
+
+		// Check if the user_name is included in the teacherNames array
+		return !teacherNames.includes(user_name);
+	}
 </script>
 
 <h1>CLASS DIVISION</h1>
@@ -199,7 +207,7 @@ console.log(divisions)
 								{#each divisions as code}
 									<td
 										><input
-											disabled={code.teacher.toLocaleLowerCase() !== $USER_NAME ||
+											disabled={isTeacherMatch(code.teacher.toLocaleLowerCase(), $USER_NAME) ||
 												(student[$USER_SUBJECT] && student[$USER_SUBJECT] !== code.group)}
 											type="checkbox"
 											on:change={(event) => {

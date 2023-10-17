@@ -21,37 +21,55 @@ export interface Database {
         }
         Relationships: []
       }
-      Student_Divisions: {
+      School_Semester: {
         Row: {
           academic_year: string | null
-          class_term: number | null
-          division: string | null
-          id: string
-          studentID: string
-          subject: string | null
+          created_at: string
+          id: number
+          isActive: boolean
+          term: Database["public"]["Enums"]["terms"] | null
         }
         Insert: {
           academic_year?: string | null
-          class_term?: number | null
-          division?: string | null
-          id?: string
-          studentID: string
-          subject?: string | null
+          created_at?: string
+          id?: number
+          isActive?: boolean
+          term?: Database["public"]["Enums"]["terms"] | null
         }
         Update: {
           academic_year?: string | null
-          class_term?: number | null
+          created_at?: string
+          id?: number
+          isActive?: boolean
+          term?: Database["public"]["Enums"]["terms"] | null
+        }
+        Relationships: []
+      }
+      Student_Divisions: {
+        Row: {
+          division: string | null
+          id: string
+          sessionID: string | null
+          subject: string | null
+        }
+        Insert: {
           division?: string | null
           id?: string
-          studentID?: string
+          sessionID?: string | null
+          subject?: string | null
+        }
+        Update: {
+          division?: string | null
+          id?: string
+          sessionID?: string | null
           subject?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Student_Divisions_studentID_fkey"
-            columns: ["studentID"]
-            referencedRelation: "Students"
-            referencedColumns: ["studentID"]
+            foreignKeyName: "Student_Divisions_sessionID_fkey"
+            columns: ["sessionID"]
+            referencedRelation: "Student_Sessions"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -65,6 +83,7 @@ export interface Database {
           mark3: number | null
           mark4: number | null
           sessionID: string | null
+          subject: string | null
         }
         Insert: {
           comment?: string | null
@@ -75,6 +94,7 @@ export interface Database {
           mark3?: number | null
           mark4?: number | null
           sessionID?: string | null
+          subject?: string | null
         }
         Update: {
           comment?: string | null
@@ -85,6 +105,7 @@ export interface Database {
           mark3?: number | null
           mark4?: number | null
           sessionID?: string | null
+          subject?: string | null
         }
         Relationships: [
           {
@@ -213,14 +234,17 @@ export interface Database {
       Subjects: {
         Row: {
           Abbreviation: string
+          hasExam: boolean
           Name: string | null
         }
         Insert: {
           Abbreviation: string
+          hasExam?: boolean
           Name?: string | null
         }
         Update: {
           Abbreviation?: string
+          hasExam?: boolean
           Name?: string | null
         }
         Relationships: []
@@ -314,7 +338,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      terms: "1" | "2" | "3"
     }
     CompositeTypes: {
       [_ in never]: never

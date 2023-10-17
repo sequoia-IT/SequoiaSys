@@ -25,8 +25,8 @@ export const load = async ({ fetch, data, depends }) => {
 			.eq('email', session?.user.email)
 			.single();
 		if (teacher) {
-			USER_SUBJECT.set(teacher.subject);
-			USER_NAME.set(teacher.name);
+			USER_SUBJECT.set(teacher.subject.toLocaleLowerCase());
+			USER_NAME.set(teacher.name.toLocaleLowerCase());
 		} else {
 			USER_SUBJECT.set('NO_SUBJECT_FOUND'.toLocaleLowerCase());
 			USER_NAME.set('NO_USER_FOUND');

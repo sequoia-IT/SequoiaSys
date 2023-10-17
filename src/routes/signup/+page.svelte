@@ -22,7 +22,7 @@
 			email: email.value,
 			password,
 			options: {
-				emailRedirectTo: `${location.origin}/login`,
+				emailRedirectTo: `${location.origin}/login`
 			}
 		});
 
@@ -33,7 +33,7 @@
 			.select();
 
 		if (error) {
-			alert("Error something happened")
+			alert('Error something happened');
 		}
 		if (UserData) {
 			goto('/teacher', { replaceState: true });
@@ -82,6 +82,7 @@
 
 		<div class="pt-10">
 			<button class="btn btn-primary">Sign up</button>
+			<a href="/login" class="btn btn-link">Login</a>
 		</div>
 	</form>
 </div>
