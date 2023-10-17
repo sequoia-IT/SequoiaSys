@@ -1,7 +1,7 @@
 import { SCHOOL_ACADEMIC_YEAR, USER_SUBJECT, USER_NAME } from '$lib/store';
 import { redirect } from '@sveltejs/kit';
 import { onDestroy } from 'svelte';
-
+export const ssr = false;
 export const load = async ({ params, locals: { supabase, getSession } }) => {
 	const session = await getSession();
 
