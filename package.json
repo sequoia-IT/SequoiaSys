@@ -43,7 +43,6 @@
 		"@supabase/auth-ui-svelte": "^0.2.6",
 		"@supabase/supabase-js": "^2.38.0",
 		"@types/mssql": "^9.1.1",
-		"mssql": "^10.0.1",
 		"supabase": "^1.100.1",
 		"svelte-select": "^5.7.0"
 	}

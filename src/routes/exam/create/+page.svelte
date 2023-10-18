@@ -13,26 +13,27 @@
 	let term = academic_years?.term;
 	let subject;
 	let division;
+	let divisions = [];
 
 	const fetchSubjects = async () => {
 		const { data } = await supabase
 			.from('Subjects')
 			.select('Abbreviation,Name')
 			.eq('hasExam', 'TRUE');
-		return transformArray(data);
+		return transformArrayforSubjects(data);
 	};
 
 	const fetchDivision = async () => {
 		if (subject) {
 			const { data } = await supabase
 				.from('Teacher_Classes')
-				.select('group')
+				.select('teacher')
 				.ilike('subject', subject);
-			return data;
+			divisions = transformArrayforDivisions(data);
 		}
 	};
 
-	function transformArray(arr) {
+	function transformArrayforSubjects(arr) {
 		// Create a new array to store the transformed objects
 		const transformedArray = [];
 
@@ -46,6 +47,26 @@
 
 			// Push the transformed object to the new array
 			transformedArray.push(transformedItem);
+		}
+
+		return transformedArray;
+	}
+
+	function transformArrayforDivisions(arr) {
+		const uniqueGroups = {};
+		const transformedArray = [];
+
+		for (const item of arr) {
+			const teacher = item.teacher;
+
+			if (!uniqueGroups[teacher]) {
+				uniqueGroups[teacher] = true;
+				const transformedItem = {
+					value: teacher,
+					label: teacher
+				};
+				transformedArray.push(transformedItem);
+			}
 		}
 
 		return transformedArray;
@@ -103,25 +124,30 @@
 						bind:justValue={subject}
 						class="input input-bordered w-full"
 						loadOptions={fetchSubjects}
+						on:change={() => {
+							fetchDivision();
+						}}
 					/>
-					{subject}
 				</div>
 			</div>
 			<div class="divider divider-horizontal" />
 			<div class="grid flex-grow card rounded-box">
 				<div>
 					<div class="label">
-						<span class="label-text">Division</span>
+						<span class="label-text">Teacher</span>
 					</div>
-					{#if subject}
-						<Select
-							placeholder="Select Division"
-							clearable={true}
-							bind:justValue={division}
-							class="input input-bordered w-full"
-							loadOptions={fetchDivision}
-						/>
-					{/if}
+
+					<select
+						id="divisionSelect"
+						bind:value={division}
+						on:change={loadTeachers}
+						class="input input-bordered w-full"
+					>
+						<option value="">Select Division</option>
+						{#each divisions as division}
+							<option value={division.value}>{division.label}</option>
+						{/each}
+					</select>
 				</div>
 			</div>
 		</div>

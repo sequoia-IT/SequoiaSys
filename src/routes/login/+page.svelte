@@ -9,8 +9,10 @@
 
 	let email;
 	let password;
+	let loading = false;
 
 	const handleSignIn = async () => {
+		loading = true;
 		const { data: userData, error } = await supabase.auth.signInWithPassword({
 			email,
 			password
@@ -69,7 +71,7 @@
 
 			<div class="pt-10">
 				<a href="/signup" class="btn btn-link btn-primary">Register</a>
-				<button on:click={handleSignIn} class="btn btn-primary">Sign In</button>
+				<button disabled={loading} on:click={handleSignIn} class="btn btn-primary">Sign In</button>
 			</div>
 			<div class="pt-3">
 				<button on:click={handleSignIn} class="btn btn-link">Forgot your password?</button>

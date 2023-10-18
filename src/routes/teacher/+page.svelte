@@ -45,15 +45,14 @@
 
 	<h1>Your Subject</h1>
 	<p>{$USER_SUBJECT}</p>
-
-	<h2 class="mt-7 text-2xl">Account Settings</h2>
-	<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
-		<li><button on:click={handleSignOut} disabled>Account Info</button></li>
-		<li><button on:click={handleSignOut} disabled>Timetable</button></li>
-		<li><a href="/exam/create">Create Exam</a></li>
-		<li><button on:click={handleSignOut}>Logout</button></li>
-	</ul>
-
+	<div>
+		<h2 class="mt-7 text-2xl">Account Settings</h2>
+		<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
+			<li><button on:click={handleSignOut} disabled>Account Info</button></li>
+			<li><button on:click={handleSignOut} disabled>Timetable</button></li>
+			<li><button on:click={handleSignOut}>Logout</button></li>
+		</ul>
+	</div>
 	<div class="flex flex-row">
 		<div class="w-1/2 px-5">
 			<h2 class="mt-7 text-2xl">Mark your division Class</h2>
@@ -93,5 +92,17 @@
 				{/if}
 			</ul>
 		</div>
+	</div>
+	<div>
+		<h2 class="mt-7 text-2xl">Admin Settings</h2>
+		<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
+			<li><a href="/admin/student/">Manage Students</a></li>
+		</ul>
+	</div>
+	<div>
+		<h2 class="mt-7 text-2xl">Exam Community Settings</h2>
+		<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
+			<li><a href="/exam/create">Create Exam</a></li>
+		</ul>
 	</div>
 </div>
