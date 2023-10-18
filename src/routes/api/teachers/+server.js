@@ -5,7 +5,7 @@
 // 	server: 'sequoia.database.windows.net',
 // 	database: 'amsv2',
 // 	user: 'sequoia',
-// 	password: 'TSA@1234',
+// 	password: '',
 // 	options: {
 // 		encrypt: true // Use SSL for the connection
 // 	}

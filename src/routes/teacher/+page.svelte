@@ -93,16 +93,19 @@
 			</ul>
 		</div>
 	</div>
-	<div>
-		<h2 class="mt-7 text-2xl">Admin Settings</h2>
-		<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
-			<li><a href="/admin/student/">Manage Students</a></li>
-		</ul>
-	</div>
-	<div>
-		<h2 class="mt-7 text-2xl">Exam Community Settings</h2>
-		<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
-			<li><a href="/exam/create">Create Exam</a></li>
-		</ul>
-	</div>
+
+	{#if $USER_NAME === 'admin'}
+		<div>
+			<h2 class="mt-7 text-2xl">Admin Settings</h2>
+			<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
+				<li><a href="/admin/student/">Manage Students</a></li>
+			</ul>
+		</div>
+		<div>
+			<h2 class="mt-7 text-2xl">Exam Community Settings</h2>
+			<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">
+				<li><a href="/exam/create">Create Exam</a></li>
+			</ul>
+		</div>
+	{/if}
 </div>
