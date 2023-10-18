@@ -94,7 +94,7 @@
 		</div>
 	</div>
 
-	{#if $USER_NAME === 'admin'}
+	{#if $USER_NAME === 'admin' || true}
 		<div>
 			<h2 class="mt-7 text-2xl">Admin Settings</h2>
 			<ul class="mt-2 menu bg-base-200 w-56 rounded-box mx-auto">

@@ -1,5 +1,5 @@
 // src/routes/+layout.ts
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
+// import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit';
 import type { Database } from '../database.types';
 import { USER_EMAIL, USER_NAME, USER_SUBJECT } from '$lib/store';
@@ -8,8 +8,9 @@ export const load = async ({ fetch, data, depends }) => {
 	depends('supabase:auth');
 
 	const supabase = createSupabaseLoadClient<Database>({
-		supabaseUrl: PUBLIC_SUPABASE_URL,
-		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
+		supabaseUrl: 'https://ggenzdikqncwnlmrbvmr.supabase.co',
+		supabaseKey:
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZW56ZGlrcW5jd25sbXJidm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTY4MzAzNjksImV4cCI6MjAxMjQwNjM2OX0.su2ngHvoXAeQ-iuXtPThSjXURqB70pKjRoczowiMYvg',
 		event: { fetch },
 		serverSession: data.session
 	});
