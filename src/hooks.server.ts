@@ -1,13 +1,12 @@
 // src/hooks.server.ts
-// import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { type Handle, redirect, error } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
-		supabaseUrl: 'https://ggenzdikqncwnlmrbvmr.supabase.co',
-		supabaseKey:
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZW56ZGlrcW5jd25sbXJidm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTY4MzAzNjksImV4cCI6MjAxMjQwNjM2OX0.su2ngHvoXAeQ-iuXtPThSjXURqB70pKjRoczowiMYvg',
+		supabaseUrl: PUBLIC_SUPABASE_URL,
+		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
 		event
 	});
 
